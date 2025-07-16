@@ -27,16 +27,21 @@ pub struct RewardSettings {
     pub min_players: u32,
 }
 
+#[derive(Clone, Drop, Introspect, Serde, Debug, PartialEq)]
+pub struct QuizDetails {
+    pub quiz_title: ByteArray,
+    pub description: ByteArray,
+    pub category: ByteArray,
+    pub visibility: bool,
+}
+
 #[derive(Clone, Drop, Serde, Debug)]
 #[dojo::model]
 pub struct Quiz {
     #[key]
     pub id: u256,
-    pub title: ByteArray,
-    pub description: ByteArray,
-    pub category: ByteArray,
+    pub quiz_details: QuizDetails,
     pub questions: Array<Question>,
-    pub public: bool,
     pub default_duration: u256,
     pub default_max_points: u16,
     pub custom_timing: bool,
@@ -75,7 +80,29 @@ pub struct QuizLeaderboard {
     pub total_points_earned: u32,
 }
 
-// #[dojo::interface]
-// pub trait QuizTrait {
-//     fn create_quiz(id: u256, title: ByteArray, description: ByteArray, category: ByteArray, questions: Array<Question>, public: bool, default_duration: u256, default_max_points: u16, custom_timing: bool, creator: ContractAddress, reward_settings: RewardSettings, created_at: u64, game_sessions_created: u32, total_rewards_distributed: u256, platform_fees_generated: u256, is_active: bool) -> Quiz;
+// pub trait QuizTrait{
+//     fn add_quiz_details(ref self: Quiz, title: ByteArray, description: ByteArray, category: ByteArray, visibility: bool);
+//     fn add_question(ref self: Quiz, question: Question);
+//     fn delete_question(ref self: Quiz, question_id: u256);
+// }
+
+// pub impl QuizImpl of QuizTrait {
+
+//     fn add_quiz_details(ref self: Quiz, title: ByteArray, description: ByteArray, category: ByteArray, visibility: bool) {
+//         self.quiz_details = QuizDetails{
+//             quiz_title: title,
+//             description: description,
+//             category: category,
+//             visibility: visibility,
+//         };
+//     }
+
+//     fn add_question(ref self: Quiz, question: Question) {
+//         self.questions.append(question);
+//     }
+
+//     fn delete_question(ref self: Quiz, question_id: u256) {
+//         // self.questions.remove(question_id);
+//     }
+    
 // }
